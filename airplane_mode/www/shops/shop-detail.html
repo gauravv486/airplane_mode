@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Shop Detail</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+</head>
+<body>
+    <main class="container">
+        {% if shop %}
+            <article>
+                <header>
+                    <h1>{{ shop.shop_name }}</h1>
+                </header>
+
+                <p><strong>Document Name:</strong> {{ shop.name }}</p>
+                <p><strong>Shop Name:</strong> {{ shop.shop_name }}</p>
+                <p><strong>Shop Number:</strong> {{ shop.shop_number }}</p>
+                <p><strong>Airport:</strong> {{ shop.airport }}</p>
+                <p><strong>Shop Type:</strong> {{ shop.shop_type }}</p>
+                <p><strong>Area:</strong> {{ shop.area }}</p>
+                <p><strong>Status:</strong> {{ shop.status }}</p>
+
+                <a href="/shops">← Back to shops</a>
+            </article>
+        {% else %}
+            <p>Shop not found.</p>
+            <a href="/shops">← Back to shops</a>
+        {% endif %}
+    </main>
+</body>
+</html>

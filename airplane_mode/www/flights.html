@@ -1,0 +1,21 @@
+{% extends "templates/web.html" %}
+{% block page_content %}
+
+<h2>Available Flights</h2>
+
+{% for flight in flights %}
+<div style="border:1px solid #ccc; padding:15px; margin:10px 0; border-radius:6px;">
+    <strong>{{ frappe.db.get_value("Airplane", flight.airplane, "airline") }}</strong>
+    | {{ flight.source_airport_code }} → {{ flight.destination_airport_code }}
+    <br>
+    {{ frappe.utils.format_date(flight.date_of_departure, "d MMMM, YYYY") }}
+    | {{ flight.time_of_departure }}
+    | {{ frappe.utils.format_duration(flight.duration) }}
+    <br><br>
+    <a href="/{{ flight.route }}">View Flight →</a>
+</div>
+{% else %}
+<p>No flights available.</p>
+{% endfor %}
+
+{% endblock %}
