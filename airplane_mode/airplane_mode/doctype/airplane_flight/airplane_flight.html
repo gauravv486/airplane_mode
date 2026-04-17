@@ -1,9 +1,54 @@
-<h2>Flight Details</h2>
-<p><strong>Airline:</strong> {{ frappe.db.get_value("Airplane", doc.airplane, "airline") }}</p>
-<p><strong>From:</strong> {{ doc.source_airport_code }}</p>
-<p><strong>To:</strong> {{ doc.destination_airport_code }}</p>
-<p><strong>Date:</strong> {{ frappe.utils.format_date(doc.date_of_departure, "d MMMM, YYYY") }}</p>
-<p><strong>Time:</strong> {{ doc.time_of_departure }}</p>
-<p><strong>Duration:</strong> {{ frappe.utils.format_duration(doc.duration) }}</p>
-<br>
-<a href="/book-flight-ticket?flight={{ doc.name }}">Book Flight</a>
+<div style="max-width: 700px; margin: 40px auto; font-family: Arial, sans-serif; border: 1px solid #e5e5e5; border-radius: 10px; overflow: hidden; background: #fff;">
+
+    <!-- Header -->
+    <div style="background: #000; color: #fff; padding: 20px 25px;">
+        <h2 style="margin: 0; font-weight: 600;">Flight Details</h2>
+    </div>
+
+    <!-- Body -->
+    <div style="padding: 25px;">
+
+        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+            <span style="color: #777;">Airline</span>
+            <span style="font-weight: 600;">
+                {{ frappe.db.get_value("Airplane", doc.airplane, "airline") }}
+            </span>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+            <span style="color: #777;">From</span>
+            <span style="font-weight: 600;">{{ doc.source_airport_code }}</span>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+            <span style="color: #777;">To</span>
+            <span style="font-weight: 600;">{{ doc.destination_airport_code }}</span>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+            <span style="color: #777;">Date</span>
+            <span style="font-weight: 600;">
+                {{ frappe.utils.format_date(doc.date_of_departure, "d MMMM, YYYY") }}
+            </span>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+            <span style="color: #777;">Time</span>
+            <span style="font-weight: 600;">{{ doc.time_of_departure }}</span>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-bottom: 25px;">
+            <span style="color: #777;">Duration</span>
+            <span style="font-weight: 600;">
+                {{ frappe.utils.format_duration(doc.duration) }}
+            </span>
+        </div>
+
+        <!-- CTA Button -->
+        <a href="/book-flight-ticket?flight={{ doc.name }}"
+           style="display: block; text-align: center; padding: 12px; background: #000; color: #fff; text-decoration: none; border-radius: 6px; font-weight: 600;">
+            Book Flight
+        </a>
+
+    </div>
+</div>
