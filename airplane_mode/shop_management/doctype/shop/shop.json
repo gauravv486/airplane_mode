@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_guest_to_view": 1,
  "allow_rename": 1,
  "autoname": "field:shop_name",
  "creation": "2026-04-16 14:56:25.161593",
@@ -13,7 +14,8 @@
   "shop_type",
   "area",
   "status",
-  "tenant"
+  "tenant",
+  "route"
  ],
  "fields": [
   {
@@ -60,12 +62,18 @@
    "fieldtype": "Link",
    "label": "Tenant",
    "options": "Shop Tenant"
+  },
+  {
+   "fieldname": "route",
+   "fieldtype": "Data",
+   "label": "Route"
   }
  ],
  "grid_page_length": 50,
+ "has_web_view": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-16 16:14:37.369048",
+ "modified": "2026-04-17 19:01:06.913628",
  "modified_by": "Administrator",
  "module": "Shop Management",
  "name": "Shop",

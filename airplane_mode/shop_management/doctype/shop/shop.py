@@ -1,9 +1,27 @@
 import frappe
-from frappe.model.document import Document
+from frappe.website.website_generator import WebsiteGenerator
 
-class Shop(Document):
+class Shop(WebsiteGenerator):
+
+    def autoname(self):
+        # Optional: use shop_name as document name (cleaner URLs)
+        if self.shop_name:
+            self.name = self.shop_name
+
+    def before_save(self):
+        # Always generate clean route (runs on create + update)
+        if self.name:
+            slug = frappe.scrub(self.name)   # converts to lowercase + hyphen
+            self.route = f"shops/{slug}"
+
     def on_update(self):
-        old_airport = self.get_doc_before_save().airport if self.get_doc_before_save() else None
+        old_doc = self.get_doc_before_save()
+
+        if old_doc:
+            old_airport = old_doc.airport
+        else:
+            old_airport = None
+
         update_airport_shop_counts(self.airport)
 
         if old_airport and old_airport != self.airport:

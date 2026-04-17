@@ -4,6 +4,13 @@ def get_context(context):
     context.no_cache = 1
     context.shops = frappe.get_all(
         "Shop",
-        fields=["name", "shop_name", "shop_number", "airport", "status"]
+        fields=[
+            "name",
+            "shop_name",
+            "shop_number",
+            "airport",
+            "status",
+            "route"   
+        ]
     )
     return context

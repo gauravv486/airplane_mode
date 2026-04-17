@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{{ doc.shop_name }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: #f4f5f6;
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 0.9rem;
+            -webkit-font-smoothing: antialiased;
+            color: #1c2126;
+        }
+
+        .page { max-width: 680px; margin: 40px auto; padding: 0 16px 64px; }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 0.78rem; color: #6b7280; margin-bottom: 18px;
+        }
+        .breadcrumb a { color: #2490ef; text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+
+        /* Card */
+        .card {
+            background: #fff;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            margin-bottom: 16px;
+        }
+
+        .card-header {
+            background: #2490ef;
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-icon {
+            width: 34px; height: 34px;
+            background: rgba(255,255,255,0.18);
+            border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .card-header h2 {
+            margin: 0; color: #fff;
+            font-size: 1.05rem; font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .card-header-sub {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.65);
+            margin-top: 2px;
+        }
+
+        .card-header-right { margin-left: auto; }
+
+        .section-title {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #9ca3af;
+            padding: 14px 22px 6px;
+            border-bottom: 1px solid #f0f1f3;
+        }
+
+        .card-body { padding: 4px 22px 18px; }
+
+        .field-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f1f3;
+            font-size: 0.855rem;
+        }
+        .field-row:last-child { border-bottom: none; }
+
+        .field-label { color: #6b7280; font-weight: 500; }
+        .field-value { color: #1c2126; font-weight: 600; text-align: right; }
+
+        /* Status badge */
+        .badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 3px 9px; border-radius: 4px;
+            font-size: 0.73rem; font-weight: 600;
+        }
+        .badge::before {
+            content: ''; width: 6px; height: 6px; border-radius: 50%;
+        }
+        .available   { background: #eafaf1; color: #28a745; }
+        .available::before   { background: #28a745; }
+        .unavailable { background: #fdf2f2; color: #e74c3c; }
+        .unavailable::before { background: #e74c3c; }
+        .badge-blue  { background: #ebf5ff; color: #1a77cc; }
+        .badge-blue::before  { background: #2490ef; }
+        .badge-gray  { background: #f3f4f6; color: #6b7280; }
+        .badge-gray::before  { background: #9ca3af; }
+
+        /* Info grid (2-col) */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+        .info-grid .field-row { flex-direction: column; align-items: flex-start; gap: 3px; padding: 12px 0; }
+        .info-grid .field-value { text-align: left; }
+
+        /* Tenant card row */
+        .tenant-row {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 0; border-bottom: 1px solid #f0f1f3;
+        }
+        .tenant-row:last-child { border-bottom: none; }
+        .avatar {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: #ebf5ff; color: #2490ef;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; font-weight: 700; flex-shrink: 0;
+        }
+        .tenant-name { font-weight: 600; font-size: 0.875rem; }
+        .tenant-meta { font-size: 0.77rem; color: #6b7280; }
+        .tenant-right { margin-left: auto; text-align: right; }
+
+        /* Payment rows */
+        .payment-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 0; border-bottom: 1px solid #f0f1f3;
+            font-size: 0.855rem;
+        }
+        .payment-row:last-child { border-bottom: none; }
+        .payment-date { color: #6b7280; font-size: 0.77rem; margin-top: 2px; }
+        .payment-amount { font-weight: 700; color: #1c2126; }
+
+        /* Back button */
+        .btn-back {
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            width: 100%; padding: 10px 16px;
+            background: #2490ef; color: #fff;
+            text-decoration: none; border-radius: 7px;
+            font-size: 0.8125rem; font-weight: 500;
+            transition: background 150ms ease;
+            margin-top: 6px;
+        }
+        .btn-back:hover { background: #1a77cc; }
+
+        .empty-note {
+            padding: 18px 0; text-align: center;
+            color: #9ca3af; font-size: 0.82rem;
+        }
+
+        @media (max-width: 480px) {
+            .info-grid { grid-template-columns: 1fr; }
+            .page { margin: 20px auto; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page">
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <a href="/shops">Shops</a>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        <span>{{ doc.shop_name }}</span>
+    </div>
+
+    <!-- ── Main Info Card ── -->
+    <div class="card">
+        <div class="card-header">
+            <div class="header-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+            </div>
+            <div>
+                <h2>{{ doc.shop_name }}</h2>
+                <div class="card-header-sub">Shop Details</div>
+            </div>
+            <div class="card-header-right">
+                <span class="badge {% if doc.status == 'Available' %}available{% else %}unavailable{% endif %}">
+                    {{ doc.status }}
+                </span>
+            </div>
+        </div>
+
+        <div class="section-title">Basic Information</div>
+        <div class="card-body">
+            <div class="field-row">
+                <span class="field-label">Shop Number</span>
+                <span class="field-value">{{ doc.shop_number }}</span>
+            </div>
+            <div class="field-row">
+                <span class="field-label">Shop Type</span>
+                <span class="field-value">{{ doc.shop_type or '—' }}</span>
+            </div>
+            <div class="field-row">
+                <span class="field-label">Airport</span>
+                <span class="field-value">{{ doc.airport }}</span>
+            </div>
+            <div class="field-row">
+                <span class="field-label">Floor / Location</span>
+                <span class="field-value">{{ doc.floor or '—' }}</span>
+            </div>
+            <div class="field-row">
+                <span class="field-label">Area (sq ft)</span>
+                <span class="field-value">{{ doc.area or '—' }}</span>
+            </div>
+            <div class="field-row">
+                <span class="field-label">Monthly Rent</span>
+                <span class="field-value">{{ '₹ ' ~ doc.monthly_rent if doc.monthly_rent else '—' }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Tenant Card ── -->
+    <div class="card">
+        <div class="section-title" style="border-bottom:none;">Current Tenant</div>
+        <div class="card-body">
+            {% if doc.current_tenant %}
+            <div class="tenant-row">
+                <div class="avatar">{{ doc.current_tenant[0] | upper }}</div>
+                <div>
+                    <div class="tenant-name">{{ doc.current_tenant }}</div>
+                    <div class="tenant-meta">{{ doc.tenant_contact or 'No contact info' }}</div>
+                </div>
+                <div class="tenant-right">
+                    <span class="badge badge-blue">Active</span>
+                    <div class="tenant-meta" style="margin-top:4px;">Since {{ doc.lease_start or '—' }}</div>
+                </div>
+            </div>
+            {% else %}
+            <div class="empty-note">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 6px; display:block; color:#d1d5db"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                No tenant assigned
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ── Lease Card ── -->
+    <div class="card">
+        <div class="section-title" style="border-bottom:none;">Active Lease</div>
+        <div class="card-body">
+            {% if doc.lease %}
+            <div class="field-row">
+                <span class="field-label">Lease ID</span>
+                <span class="field-value">{{ doc.lease }}</span>
+            </div>
+            <div class="field-row">
+                <span class="field-label">Start Date</span>
+                <span class="field-value">{{ doc.lease_start or '—' }}</span>
+            </div>
+            <div class="field-row">
+                <span class="field-label">End Date</span>
+                <span class="field-value">{{ doc.lease_end or '—' }}</span>
+            </div>
+            <div class="field-row">
+                <span class="field-label">Lease Status</span>
+                <span class="badge badge-blue">{{ doc.lease_status or 'Active' }}</span>
+            </div>
+            {% else %}
+            <div class="empty-note">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 6px; display:block; color:#d1d5db"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 12h8M8 8h5"/></svg>
+                No active lease
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ── Recent Rent Payments ── -->
+    <div class="card">
+        <div class="section-title" style="border-bottom:none;">Recent Rent Payments</div>
+        <div class="card-body">
+            {% if doc.rent_payments %}
+                {% for payment in doc.rent_payments %}
+                <div class="payment-row">
+                    <div>
+                        <div style="font-weight:600;">{{ payment.payment_id }}</div>
+                        <div class="payment-date">{{ payment.date }}</div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div class="payment-amount">₹ {{ payment.amount }}</div>
+                        <span class="badge {% if payment.status == 'Paid' %}available{% else %}unavailable{% endif %}" style="margin-top:4px;">
+                            {{ payment.status }}
+                        </span>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+            <div class="empty-note">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 6px; display:block; color:#d1d5db"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                No payment records
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ── Lead Info ── -->
+    <div class="card">
+        <div class="section-title" style="border-bottom:none;">Shop Lead</div>
+        <div class="card-body">
+            {% if doc.shop_lead %}
+            <div class="field-row">
+                <span class="field-label">Lead Name</span>
+                <span class="field-value">{{ doc.shop_lead }}</span>
+            </div>
+            <div class="field-row">
+                <span class="field-label">Lead Status</span>
+                <span class="badge badge-blue">{{ doc.lead_status or '—' }}</span>
+            </div>
+            <div class="field-row">
+                <span class="field-label">Contact</span>
+                <span class="field-value">{{ doc.lead_contact or '—' }}</span>
+            </div>
+            {% else %}
+            <div class="empty-note">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 6px; display:block; color:#d1d5db"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                No lead assigned
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <a href="/shops" class="btn-back">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Back to Shops
+    </a>
+
+</div>
+
+</body>
+</html>
