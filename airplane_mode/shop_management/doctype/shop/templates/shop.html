@@ -19,7 +19,6 @@
 
         .page { max-width: 680px; margin: 40px auto; padding: 0 16px 64px; }
 
-        /* Breadcrumb */
         .breadcrumb {
             display: flex; align-items: center; gap: 6px;
             font-size: 0.78rem; color: #6b7280; margin-bottom: 18px;
@@ -27,7 +26,6 @@
         .breadcrumb a { color: #2490ef; text-decoration: none; }
         .breadcrumb a:hover { text-decoration: underline; }
 
-        /* Card */
         .card {
             background: #fff;
             border: 1px solid rgba(0,0,0,0.08);
@@ -92,7 +90,6 @@
         .field-label { color: #6b7280; font-weight: 500; }
         .field-value { color: #1c2126; font-weight: 600; text-align: right; }
 
-        /* Status badge */
         .badge {
             display: inline-flex; align-items: center; gap: 5px;
             padding: 3px 9px; border-radius: 4px;
@@ -105,47 +102,7 @@
         .available::before   { background: #28a745; }
         .unavailable { background: #fdf2f2; color: #e74c3c; }
         .unavailable::before { background: #e74c3c; }
-        .badge-blue  { background: #ebf5ff; color: #1a77cc; }
-        .badge-blue::before  { background: #2490ef; }
-        .badge-gray  { background: #f3f4f6; color: #6b7280; }
-        .badge-gray::before  { background: #9ca3af; }
 
-        /* Info grid (2-col) */
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0;
-        }
-        .info-grid .field-row { flex-direction: column; align-items: flex-start; gap: 3px; padding: 12px 0; }
-        .info-grid .field-value { text-align: left; }
-
-        /* Tenant card row */
-        .tenant-row {
-            display: flex; align-items: center; gap: 12px;
-            padding: 12px 0; border-bottom: 1px solid #f0f1f3;
-        }
-        .tenant-row:last-child { border-bottom: none; }
-        .avatar {
-            width: 36px; height: 36px; border-radius: 50%;
-            background: #ebf5ff; color: #2490ef;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.8rem; font-weight: 700; flex-shrink: 0;
-        }
-        .tenant-name { font-weight: 600; font-size: 0.875rem; }
-        .tenant-meta { font-size: 0.77rem; color: #6b7280; }
-        .tenant-right { margin-left: auto; text-align: right; }
-
-        /* Payment rows */
-        .payment-row {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 10px 0; border-bottom: 1px solid #f0f1f3;
-            font-size: 0.855rem;
-        }
-        .payment-row:last-child { border-bottom: none; }
-        .payment-date { color: #6b7280; font-size: 0.77rem; margin-top: 2px; }
-        .payment-amount { font-weight: 700; color: #1c2126; }
-
-        /* Back button */
         .btn-back {
             display: flex; align-items: center; justify-content: center; gap: 6px;
             width: 100%; padding: 10px 16px;
@@ -153,17 +110,10 @@
             text-decoration: none; border-radius: 7px;
             font-size: 0.8125rem; font-weight: 500;
             transition: background 150ms ease;
-            margin-top: 6px;
         }
         .btn-back:hover { background: #1a77cc; }
 
-        .empty-note {
-            padding: 18px 0; text-align: center;
-            color: #9ca3af; font-size: 0.82rem;
-        }
-
         @media (max-width: 480px) {
-            .info-grid { grid-template-columns: 1fr; }
             .page { margin: 20px auto; }
         }
     </style>
@@ -179,7 +129,7 @@
         <span>{{ doc.shop_name }}</span>
     </div>
 
-    <!-- ── Main Info Card ── -->
+    <!-- Shop Details Card -->
     <div class="card">
         <div class="card-header">
             <div class="header-icon">
@@ -225,115 +175,6 @@
                 <span class="field-label">Monthly Rent</span>
                 <span class="field-value">{{ '₹ ' ~ doc.monthly_rent if doc.monthly_rent else '—' }}</span>
             </div>
-        </div>
-    </div>
-
-    <!-- ── Tenant Card ── -->
-    <div class="card">
-        <div class="section-title" style="border-bottom:none;">Current Tenant</div>
-        <div class="card-body">
-            {% if doc.current_tenant %}
-            <div class="tenant-row">
-                <div class="avatar">{{ doc.current_tenant[0] | upper }}</div>
-                <div>
-                    <div class="tenant-name">{{ doc.current_tenant }}</div>
-                    <div class="tenant-meta">{{ doc.tenant_contact or 'No contact info' }}</div>
-                </div>
-                <div class="tenant-right">
-                    <span class="badge badge-blue">Active</span>
-                    <div class="tenant-meta" style="margin-top:4px;">Since {{ doc.lease_start or '—' }}</div>
-                </div>
-            </div>
-            {% else %}
-            <div class="empty-note">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 6px; display:block; color:#d1d5db"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-                No tenant assigned
-            </div>
-            {% endif %}
-        </div>
-    </div>
-
-    <!-- ── Lease Card ── -->
-    <div class="card">
-        <div class="section-title" style="border-bottom:none;">Active Lease</div>
-        <div class="card-body">
-            {% if doc.lease %}
-            <div class="field-row">
-                <span class="field-label">Lease ID</span>
-                <span class="field-value">{{ doc.lease }}</span>
-            </div>
-            <div class="field-row">
-                <span class="field-label">Start Date</span>
-                <span class="field-value">{{ doc.lease_start or '—' }}</span>
-            </div>
-            <div class="field-row">
-                <span class="field-label">End Date</span>
-                <span class="field-value">{{ doc.lease_end or '—' }}</span>
-            </div>
-            <div class="field-row">
-                <span class="field-label">Lease Status</span>
-                <span class="badge badge-blue">{{ doc.lease_status or 'Active' }}</span>
-            </div>
-            {% else %}
-            <div class="empty-note">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 6px; display:block; color:#d1d5db"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 12h8M8 8h5"/></svg>
-                No active lease
-            </div>
-            {% endif %}
-        </div>
-    </div>
-
-    <!-- ── Recent Rent Payments ── -->
-    <div class="card">
-        <div class="section-title" style="border-bottom:none;">Recent Rent Payments</div>
-        <div class="card-body">
-            {% if doc.rent_payments %}
-                {% for payment in doc.rent_payments %}
-                <div class="payment-row">
-                    <div>
-                        <div style="font-weight:600;">{{ payment.payment_id }}</div>
-                        <div class="payment-date">{{ payment.date }}</div>
-                    </div>
-                    <div style="text-align:right;">
-                        <div class="payment-amount">₹ {{ payment.amount }}</div>
-                        <span class="badge {% if payment.status == 'Paid' %}available{% else %}unavailable{% endif %}" style="margin-top:4px;">
-                            {{ payment.status }}
-                        </span>
-                    </div>
-                </div>
-                {% endfor %}
-            {% else %}
-            <div class="empty-note">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 6px; display:block; color:#d1d5db"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                No payment records
-            </div>
-            {% endif %}
-        </div>
-    </div>
-
-    <!-- ── Lead Info ── -->
-    <div class="card">
-        <div class="section-title" style="border-bottom:none;">Shop Lead</div>
-        <div class="card-body">
-            {% if doc.shop_lead %}
-            <div class="field-row">
-                <span class="field-label">Lead Name</span>
-                <span class="field-value">{{ doc.shop_lead }}</span>
-            </div>
-            <div class="field-row">
-                <span class="field-label">Lead Status</span>
-                <span class="badge badge-blue">{{ doc.lead_status or '—' }}</span>
-            </div>
-            <div class="field-row">
-                <span class="field-label">Contact</span>
-                <span class="field-value">{{ doc.lead_contact or '—' }}</span>
-            </div>
-            {% else %}
-            <div class="empty-note">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 6px; display:block; color:#d1d5db"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                No lead assigned
-            </div>
-            {% endif %}
         </div>
     </div>
 
